@@ -6,8 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dominik-th/mqtt-device-tracker-bridge.git"
+  },
+  "author": {
+    "name": "Dominik Thiemermann",
+    "email": "dominik@dthiemermann.org",
+    "url": "https://www.dthiemermann.org/"
+  },
+  "license": "MIT",
   "dependencies": {
     "koa": "^2.5.0",
     "koa-router": "^7.4.0",
