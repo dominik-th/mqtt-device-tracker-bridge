@@ -2,9 +2,12 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const mqtt = require('mqtt');
 const config = require('./config');
-const app = new Koa();
-const router = new Router();
-const client = mqtt.connect(`mqtt://${config.mqtt.host}`);
+
+let app = new Koa();
+let router = new Router();
+
+let mqttHost = config.mqtt.host || 'localhost';
+let client = mqtt.connect(`mqtt://${mqttHost}`);
 
 router.get('/location/:device/:location', (ctx, next) => {
   client.publish(`location/${ctx.params.device}`, ctx.params.location);
@@ -18,7 +21,7 @@ router.get('/location/:device/:lat/:lng', (ctx, next) => {
 });
 
 app.use((ctx, next) => {
-  if (ctx.query && ctx.query.secret === config.secret) {
+  if (!config.secret || ctx.query && ctx.query.secret === config.secret) {
     ctx.body = 'ok';
     next();
   } else {
