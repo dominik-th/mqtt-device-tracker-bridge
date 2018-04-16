@@ -10,14 +10,27 @@ let mqttHost = config.mqtt.host || 'localhost';
 let client = mqtt.connect(`mqtt://${mqttHost}`);
 
 router.get('/location/:device/:location', (ctx, next) => {
-  client.publish(`location/${ctx.params.device}`, ctx.params.location);
+  let {
+    device,
+    location
+  } = ctx.params;
+  if (!config.allowedDevices || config.allowedDevices.indexOf(device) > -1) {
+    client.publish(`location/${device}`, location);
+  }
 });
 
 router.get('/location/:device/:lat/:lng', (ctx, next) => {
-  client.publish(`location/${ctx.params.device}`, JSON.stringify({
-    latitude: ctx.params.lat,
-    longitude: ctx.params.lng
-  }));
+  let {
+    device,
+    lat,
+    lng
+  } = ctx.params;
+  if (!config.allowedDevices || config.allowedDevices.indexOf(device) > -1) {
+    client.publish(`location/${ctx.params.device}`, JSON.stringify({
+      latitude: lat,
+      longitude: lng
+    }));
+  }
 });
 
 app.use((ctx, next) => {
